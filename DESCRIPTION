@@ -1,0 +1,13 @@
+Package: iso.assign2
+Type: Package
+Title: Determination of breeding origins using stable isotope data
+Version: 0.1
+Date: 2015-09-02
+Authors@R: as.person('Clark Rushing <crushing05@gmail.com> [aut, cre]')
+Description: This is a bare bones package which contains basic functions for determining 	the breeding origin of birds using stable isotope data and base maps that describe 	spatial variation in those isotopes. 
+Imports:dplyr,
+	ggplot2,
+	tidyr,
+	ggthemes
+License: What license is it under?
+LazyData: TRUE
