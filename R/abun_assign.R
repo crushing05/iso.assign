@@ -16,9 +16,9 @@ abun_assign <- function(iso.like, rel.abun, iso.weight, abun.weight, odds = 3){
     iso.weight <- 10^iso.weight
     abun.weight <- 10^abun.weight
   # Estimate posteriors under each weighting combination
-    assign <- prop.table(rel.abun^abun.weight*iso.like^iso.weight,2) #Prob for each indv/cell
-    prob <- apply(assign,2,function(x)x/max(x)) # Relative prob for each indv/cell
-    origin <- ifelse(prob <1/odds, 0 , 1) # Likely/unlikely for each indv/cell
+    prob <- prop.table(rel.abun^abun.weight*iso.like^iso.weight,2) #Prob for each indv/cell
+    rel.prob <- apply(prob,2,function(x)x/max(x)) # Relative prob for each indv/cell
+    origin <- ifelse(rel.prob <1/odds, 0 , 1) # Likely/unlikely for each indv/cell
 
   wght.summ <- list(origin = origin, prob = prob)
   return(wght.summ)
