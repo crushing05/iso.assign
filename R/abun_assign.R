@@ -1,25 +1,38 @@
 #' Breeding assignment using weighted stable isotope and abundance data
 #'
 #' Function to estimate the posterior probability of origin and likely/unlikely origins for stable hydrogen isotope samples and relative breeding abundance
-#' @param iso.lik Dataframe or matrix containing isotope-based likelihood of origin for each breeding cell and individual.
-#' @param rel.abun  Vector of relative abundance values for each breeding cell (should sum to 1).
-#' @param iso.weight  Weight value to apply to stable isotope data.
-#' @param abun.weight  Weight value to apply to relative abundance data.
-#' @param odds  Denominator of the odds ratio for determining likely/unlikely origins. Default is 3.
+#' @param iso_data Dataframe containing the isotope-based assignment results from the iso_assign() function
+#' @param rel_abun  Vector of relative abundance values for each breeding cell (should sum to 1).
+#' @param iso_weight  Weight value to apply to stable isotope data.
+#' @param abun_weight  Weight value to apply to relative abundance data.
+#' @param odds  Odds for determining likely/unlikely origins. Default is 0.67.
 #' @keywords assignment; stable isotopes; abundance
-#' @return A list containing two dataframes: prob contain posterior probabilities for each breeding origin and individual & origin contains the likely/unlikely origins for each individual
+#' @return Data frames containing the isotope-based assignment results plus the weighted posterior probabilities & origins for each individual
 #' @examples
-#' weight_assign(iso.lik = amre_iso$iso.prob, rel.abun = woth_base$rel.abun, iso.weight = -0.1, abun.weight = -0.9)
+#' woth_iso <- iso_assign(dd = woth_dd, df_base = woth_base$ddf, lat = woth_base$y, lon = woth_base$x)
+#' abun_assign(iso_Data = woth_iso, rel_abun = woth_base$rel.abun, iso_weight = -0.7, abun_weight = 0)
 #'
 
-abun_assign <- function(iso.like, rel.abun, iso.weight, abun.weight, odds = 3){
+abun_assign <- function(iso_data, rel_abun, iso_weight, abun_weight, odds = 0.67){
     iso.weight <- 10^iso.weight
     abun.weight <- 10^abun.weight
   # Estimate posteriors under each weighting combination
-    prob <- prop.table(rel.abun^abun.weight*iso.like^iso.weight,2) #Prob for each indv/cell
-    rel.prob <- apply(prob,2,function(x)x/max(x)) # Relative prob for each indv/cell
-    origin <- ifelse(rel.prob <1/odds, 0 , 1) # Likely/unlikely for each indv/cell
+    wght_summ <- iso_data %>%
+      dplyr::group_by(indv) %>%
+      dplyr::mutate(temp_prob = rel_abun ^ abun_weight * iso_like ^ iso_weight,
+                    wght_prob = temp_prob / sum(temp_prob)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(-temp_prob) %>%
+      ## Nest by individual
+      tidyr::nest(-indv) %>%
+      ## Estimate cumulative probability and estimate cutoff value for each individual
+      dplyr::mutate(fit = purrr::map(data, ~ predict(smooth.spline(cumsum(sort(.$wght_prob)), sort(.$wght_prob), spar = 0.1), 1 - odds)),
+                    wght_cutoff = map_dbl(fit, "y")) %>%
+      ## Remove spline predictions & unnest dataframe
+      dplyr::select(-fit) %>%
+      tidyr::unnest() %>%
+      ## Reclassify cells as likely/unlikely based on cumulative prob
+      dplyr::mutate(wght_origin = ifelse(wght_prob > wght_cutoff, 1, 0))
 
-  wght.summ <- list(origin = origin, prob = prob)
   return(wght.summ)
 }
