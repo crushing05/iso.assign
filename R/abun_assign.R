@@ -35,5 +35,5 @@ abun_assign <- function(iso_data, rel_abun, iso_weight, abun_weight, odds = 0.67
       ## Reclassify cells as likely/unlikely based on cumulative prob
       dplyr::mutate(wght_origin = ifelse(wght_prob > wght_cutoff, 1, 0))
 
-  return(wght.summ)
+  return(wght_summ)
 }
