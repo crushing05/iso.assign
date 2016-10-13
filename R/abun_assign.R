@@ -14,8 +14,9 @@
 #'
 
 abun_assign <- function(iso_data, rel_abun, iso_weight, abun_weight, odds = 0.67){
-    iso.weight <- 10^iso.weight
-    abun.weight <- 10^abun.weight
+    iso.weight <- 10^iso_weight
+    abun.weight <- 10^abun_weight
+
   # Estimate posteriors under each weighting combination
     wght_summ <- iso_data %>%
       dplyr::group_by(indv) %>%
