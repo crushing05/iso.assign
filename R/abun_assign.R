@@ -20,7 +20,7 @@ abun_assign <- function(iso_data, rel_abun, iso_weight, abun_weight, odds = 0.67
   # Estimate posteriors under each weighting combination
     wght_summ <- iso_data %>%
       dplyr::group_by(indv) %>%
-      dplyr::mutate(temp_prob = rel_abun ^ abun_weight * iso_like ^ iso_weight,
+      dplyr::mutate(temp_prob = rel_abun ^ abun.weight * iso_like ^ iso.weight,
                     wght_prob = temp_prob / sum(temp_prob)) %>%
       dplyr::ungroup() %>%
       dplyr::select(-temp_prob) %>%
