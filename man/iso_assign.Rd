@@ -4,26 +4,36 @@
 \alias{iso_assign}
 \title{Breeding assignment using stable isotope data}
 \usage{
-iso_assign(dd, df.base, odds = 3)
+iso_assign(dd, df_base, lat, lon, odds = 0.67, names)
 }
 \arguments{
 \item{dd}{Vector of length = # individuals containing the feather deuterium values.}
 
-\item{df.base}{Vector of predicted deuterium values for each potential breeding location.}
+\item{df_base}{Vector containing the predicted deuterium values for each potential breeding location.}
 
-\item{odds}{Denominator of the odds ratio for determining likely/unlikely origins. Default is 3.}
+\item{lat}{Vector containing the latitudes for each potential breeding location.}
+
+\item{lon}{Vector containing the longitudes for each potential breeding location.}
+
+\item{odds}{Odds for determining likely/unlikely origins. Default is 0.67.}
+
+\item{names}{Optional vector containing individual IDs}
 }
 \value{
-A list containing three dataframes:
- iso.like contains a likelihood values for each breeding origin and each individual
- iso.prob contain relative probabilities for each breeding origin and individual
- iso.origin contains the likely/unlikely origins for each individual
+A data frame containing:
+ indv: Individual ID
+ lat: Latitude of each breeding cell
+ lon: Longitude of each breeding cell
+ iso_cut: The individual probabiilty threshold for defining likely/unlikely cells
+ iso.like: The likelihood values for each breeding cell
+ iso.prob: The relative probabilities for each breeding cell
+ iso.origin: The likely/unlikely origins for each individual
 }
 \description{
 Function to estimate the likelihood of origin and likely/unlikely origins for stable hydrogen isotope samples
 }
 \examples{
-iso_assign(dd = woth_dd, df.base = woth_base$ddf)
+iso_assign(dd = woth_dd, df_base = woth_base$ddf, lat = woth_base$y, lon = woth_base$x)
 }
 \keyword{assignment;}
 \keyword{isotopes}

@@ -4,10 +4,12 @@
 \alias{area_assign}
 \title{Estimate the assignment area for known-origin tissue samples}
 \usage{
-area_assign(origin)
+area_assign(summ, iso = TRUE)
 }
 \arguments{
-\item{origin}{Matrix with columns indicating likely/unlikely cells for each individual.}
+\item{summ}{Assignment results from either the iso_assign() or abun_assign() functions}
+
+\item{iso}{Should area be estimated for the isotope-only assignment (default) or with abundance used a prior}
 }
 \value{
 Assignment area (i.e., the mean number of cells identified as likely for all individuals)
@@ -16,7 +18,7 @@ Assignment area (i.e., the mean number of cells identified as likely for all ind
 Function to estimate the mean number of cells identified as likely for all individuals in a given sample
 }
 \examples{
-area_assign(origin = amre_assign$iso.origin, base = amre.base)
+area_assign(summ = woth_iso)
 }
 \keyword{area}
 \keyword{assignment}

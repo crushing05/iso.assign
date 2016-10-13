@@ -4,12 +4,14 @@
 \alias{error_rate}
 \title{Estimate the assignment error rate for known-origin tissue samples}
 \usage{
-error_rate(origin, origin.cell)
+error_rate(summ, origin_cell, iso = TRUE)
 }
 \arguments{
-\item{origin}{Matrix with columns indicating likely/unlikely cells for each individual.}
+\item{summ}{Assignment results from either the iso_assign() or abun_assign() functions}
 
-\item{origin.cell}{Vector indicating the true breeding cell (i.e. row in origin matrix) for each individual.}
+\item{origin_cell}{Vector containing the true breeding cell for each individual}
+
+\item{iso}{Should area be estimated for the isotope-only assignment (default) or with abundance used a prior}
 }
 \value{
 Error rate (i.e., the proportion of individuals that are miss classified)
@@ -18,7 +20,7 @@ Error rate (i.e., the proportion of individuals that are miss classified)
 Function to estimate the proportion of individuals that are incorrectly assigned to their actual breeding origin
 }
 \examples{
-error_rate(origin = amre_assign$iso.origin, origin.cell = amre$origin)
+error_rate(summ = woth_iso, origin.cell = woth_origin_cell)
 }
 \keyword{assignment;}
 \keyword{error}

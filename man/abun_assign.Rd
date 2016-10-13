@@ -4,27 +4,28 @@
 \alias{abun_assign}
 \title{Breeding assignment using weighted stable isotope and abundance data}
 \usage{
-abun_assign(iso.like, rel.abun, iso.weight, abun.weight, odds = 3)
+abun_assign(iso_data, rel_abun, iso_weight, abun_weight, odds = 0.67)
 }
 \arguments{
-\item{rel.abun}{Vector of relative abundance values for each breeding cell (should sum to 1).}
+\item{iso_data}{Dataframe containing the isotope-based assignment results from the iso_assign() function}
 
-\item{iso.weight}{Weight value to apply to stable isotope data.}
+\item{rel_abun}{Vector of relative abundance values for each breeding cell (should sum to 1).}
 
-\item{abun.weight}{Weight value to apply to relative abundance data.}
+\item{iso_weight}{Weight value to apply to stable isotope data.}
 
-\item{odds}{Denominator of the odds ratio for determining likely/unlikely origins. Default is 3.}
+\item{abun_weight}{Weight value to apply to relative abundance data.}
 
-\item{iso.lik}{Dataframe or matrix containing isotope-based likelihood of origin for each breeding cell and individual.}
+\item{odds}{Odds for determining likely/unlikely origins. Default is 0.67.}
 }
 \value{
-A list containing two dataframes: prob contain posterior probabilities for each breeding origin and individual & origin contains the likely/unlikely origins for each individual
+Data frames containing the isotope-based assignment results plus the weighted posterior probabilities & origins for each individual
 }
 \description{
 Function to estimate the posterior probability of origin and likely/unlikely origins for stable hydrogen isotope samples and relative breeding abundance
 }
 \examples{
-weight_assign(iso.lik = amre_iso$iso.prob, rel.abun = woth_base$rel.abun, iso.weight = -0.1, abun.weight = -0.9)
+woth_iso <- iso_assign(dd = woth_dd, df_base = woth_base$ddf, lat = woth_base$y, lon = woth_base$x)
+abun_assign(iso_Data = woth_iso, rel_abun = woth_base$rel.abun, iso_weight = -0.7, abun_weight = 0)
 }
 \keyword{abundance}
 \keyword{assignment;}
