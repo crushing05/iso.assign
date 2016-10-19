@@ -31,7 +31,7 @@ wght_coord <- function(summ, iso = TRUE) {
               varZ = sum((Z1[Z1 != 0] - mean(Z1[Z1 != 0])) ^ 2),
               wght_x = sum(prob * X1) / V1,
               wght_y = sum(prob * Y1) / V1,
-              wght_z = sum(prob * Y1) / V1,
+              wght_z = sum(prob * Z1) / V1,
               var_wght_x = (1 - V2 / V1) * varX,
               var_wght_y = (1 - V2 / V1) * varY,
               var_wght_z = (1 - V2 / V1) * varZ,
@@ -46,15 +46,12 @@ wght_coord <- function(summ, iso = TRUE) {
 
               # Convert average coordinates to lat/long
               Lon = atan2(x = wght_x, y = wght_y),
-              Hyp = sqrt(wght_x * wght_x + wght_y * wght_y),
               Lat = asin(wght_z),
 
               Lon_l = atan2(x = wght_x_l, y = wght_y_l),
-              Hyp_l = sqrt(wght_x_l * wght_x_l + wght_y_l * wght_y_l),
               Lat_l = asin(wght_z_l),
 
               Lon_u = atan2(x = wght_x_u, y = wght_y_u),
-              Hyp_u = sqrt(wght_x_u * wght_x_u + wght_y_u * wght_y_u),
               Lat_u = asin(wght_z_u),
 
 
