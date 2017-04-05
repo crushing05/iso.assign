@@ -54,7 +54,7 @@ wght_coord <- function(summ, iso = TRUE) {
               Lon_u = atan2(x = wght_x_u, y = wght_y_u),
               Lat_u = asin(wght_z_u),
 
-              y_se = asin(sqrt(var_wght_z/nCell)),
+              y_se = sqrt(asin(sqrt(var_wght_z/nCell)) * 180/pi),
 
               # Convert lat/long to degrees
               x = Lon * 180 / pi,
