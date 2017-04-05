@@ -54,6 +54,7 @@ wght_coord <- function(summ, iso = TRUE) {
               Lon_u = atan2(x = wght_x_u, y = wght_y_u),
               Lat_u = asin(wght_z_u),
 
+              y_se = asin(sqrt(var_wght_z/nCell)),
 
               # Convert lat/long to degrees
               x = Lon * 180 / pi,
@@ -64,8 +65,8 @@ wght_coord <- function(summ, iso = TRUE) {
 
               x_u = Lon_u * 180 / pi,
               y_u = Lat_u * 180 / pi) %>%
-    select(indv, x, y, x_l, y_l, x_u, y_u) %>%
-    rename(lon = x, lat = y, lon_LCI = x_l, lat_LCI = y_l, lon_UCI = x_u, lat_UCI = y_u)
+    select(indv, x, y, y_se, x_l, y_l, x_u, y_u) %>%
+    rename(lon = x, lat = y, lat_se = y_se, lon_LCI = x_l, lat_LCI = y_l, lon_UCI = x_u, lat_UCI = y_u)
   return(coords)
 }
 
