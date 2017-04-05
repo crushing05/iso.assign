@@ -64,8 +64,8 @@ wght_coord <- function(summ, iso = TRUE) {
 
               x_u = Lon_u * 180 / pi,
               y_u = Lat_u * 180 / pi)
-    coords <- dplyr::select(indv, x, y, y_se, x_l, y_l, x_u, y_u)
-    coords <- dplyr:: rename(lon = x, lat = y, lat_se = y_se, lon_LCI = x_l, lat_LCI = y_l, lon_UCI = x_u, lat_UCI = y_u)
+    coords <- dplyr::select(coords, indv, x, y, y_se, x_l, y_l, x_u, y_u)
+    coords <- dplyr::rename(coords, lon = x, lat = y, lat_se = y_se, lon_LCI = x_l, lat_LCI = y_l, lon_UCI = x_u, lat_UCI = y_u)
   return(coords)
 }
 
