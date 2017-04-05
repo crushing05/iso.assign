@@ -13,17 +13,16 @@
 
 wght_coord <- function(summ, iso = TRUE) {
   if(iso == TRUE){
-    summ <- rename(summ, origin = iso_origin, prob = iso_prob)
+    summ <- dplyr::rename(summ, origin = iso_origin, prob = iso_prob)
   }else{
-    summ <- rename(summ, origin = wght_origin, prob = wght_prob)
+    summ <- dplyr::rename(summ, origin = wght_origin, prob = wght_prob)
   }
 
-  coords <- summ %>%
-    mutate(prob = prob * origin, lat = lat * origin, lon = lon * origin,
+  coords <- dplyr::mutate(summ, prob = prob * origin, lat = lat * origin, lon = lon * origin,
            lat1 = lat * pi / 180, lon1 = lon * pi / 180,
-           X1 = cos(lat1) * cos(lon1), Y1 = cos(lat1) * sin(lon1), Z1 = sin(lat1)) %>%
-    group_by(indv) %>%
-    summarise(nCell = sum(origin),
+           X1 = cos(lat1) * cos(lon1), Y1 = cos(lat1) * sin(lon1), Z1 = sin(lat1))
+  coords <- dplyr::group_by(coords, indv)
+  coords <- dplyr::summarise(coords, nCell = sum(origin),
               V1 = sum(prob),
               V2 = sum(prob ^ 2),
               varX = sum((X1[X1 != 1] - mean(X1[X1 != 1])) ^ 2),
@@ -64,9 +63,9 @@ wght_coord <- function(summ, iso = TRUE) {
               y_l = Lat_l * 180 / pi,
 
               x_u = Lon_u * 180 / pi,
-              y_u = Lat_u * 180 / pi) %>%
-    select(indv, x, y, y_se, x_l, y_l, x_u, y_u) %>%
-    rename(lon = x, lat = y, lat_se = y_se, lon_LCI = x_l, lat_LCI = y_l, lon_UCI = x_u, lat_UCI = y_u)
+              y_u = Lat_u * 180 / pi)
+    coords <- dplyr::select(indv, x, y, y_se, x_l, y_l, x_u, y_u)
+    coords <- dplyr:: rename(lon = x, lat = y, lat_se = y_se, lon_LCI = x_l, lat_LCI = y_l, lon_UCI = x_u, lat_UCI = y_u)
   return(coords)
 }
 
